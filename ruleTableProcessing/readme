@@ -1,0 +1,22 @@
+This folder is used to process the reordering by the rule table alignment information.
+You can run this program by using the following command:
+
+$ python main.py rule-table result kblm.cn
+
+Input:
+	rule-table: it is the tree-to-tree rule table file
+	result: just the name for output
+	kblm.cn: it is the source binary-kenlm, it is used to calculate the missing alignment by 2-gram**
+
+	Note: ** it can be n-gram also, but it is not finish
+
+Output: 
+	result.reorder: add missing alignment
+	result.reorder.m: the middle process when adding missing alignment
+	result.replace: replace the target language with source language by sorting the target alignment. The alignment is changed for the source to source alignment (full align**)
+	result.html: the webpage showing the replacement easily
+	result.uni: the rule table result that filter out the repeat rule
+
+	Note: ** full align means all source word and target word aligned absulutely equal to 1
+
+Final output: result.uni
