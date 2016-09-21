@@ -4,7 +4,12 @@ import optparse
 import datetime
 import codecs
 
+if len(sys.argv) == 1:
+	print 'Some arguments missing, please use --help to check.'
+	exit()
+
 def countFileLine(fileName):
+	print 'Counting file total line number...'
 	fr = codecs.open(fileName, 'r', encoding='utf-8')
 	index = 0
 	for line in fr:
@@ -37,7 +42,6 @@ def main():
 	flag_suffix = not (suffix == 'None')
 	flag_num = not (num == 'None')
 
-	print flag_source, flag_target, flag_source_tree, flag_target_tree, flag_suffix
 	if not flag_source and not flag_target and not flag_source_tree and not flag_target_tree:
 		print 'Some arguments missing, please use --help to check.'	
 		return
@@ -89,8 +93,8 @@ def main():
 		line_source_tree = fr_source_tree.readline() if flag_source_tree else ' '
 		line_target_tree = fr_target_tree.readline() if flag_target_tree else ' '
 
-		if extractLineNo % 10000 == 0:
-			sys.stdout.write('\r' + str(extractLineNo))
+		if index % 10000 == 0:
+			sys.stdout.write('Current line: %d, Extracted line: %d\r' % (index, extractLineNo))
 			sys.stdout.flush()
 
 		if not line_source or not line_target or not line_source_tree or not line_target_tree:
