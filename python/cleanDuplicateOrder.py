@@ -2,11 +2,13 @@
 import sys
 import os
 import time
+import codecs
 
 from collections import OrderedDict
 
 if len(sys.argv) != 2:
-	print 'This program will output the file names [input].uni'
+	print 'This program for cleaning line in single file'
+	print 'Output file is named as [input].uni'
 	print '$ python', sys.argv[0], "[input]"
 	exit()
 
@@ -15,33 +17,29 @@ outputFile = inputFile+'.uni'
 startTime = time.time()
 count = 0
 
-fr = open(inputFile, 'r')
-fw = open(outputFile, 'w')
+fr = codecs.open(inputFile, 'r', encoding='utf-8')
+fw = codecs.open(outputFile, 'w', encoding='utf-8')
 
 # refrom the input and store into set
+print 'Loading corpus into memory...'
 inputList = []
 while True:
 	s = fr.readline()
-
 	if not s:
 		break
 	count += 1
 	if count % 10000 == 0:
-		print count 
+		sys.stdout.write('%d\r' % count)
+		sys.stdout.flush()
+		
+	inputList.append(s.strip())
 
-	tmp = s.strip()
-
-	inputList.append(tmp)
-
-#outputList = sorted(set(inputList), key=inputList.index)
-
+print 'Cleaning...'
 outputList = list(OrderedDict.fromkeys(inputList))
 
+print 'Exporting result...'
 for line in outputList:
 	fw.write(line + '\n')
-
-#for line in inputList:
-#	fw.write(line + '\n')
 
 fr.close()
 fw.close()
