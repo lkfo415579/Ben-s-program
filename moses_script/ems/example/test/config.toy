@@ -1,0 +1,59 @@
+################################################
+### CONFIGURATION FILE FOR AN SMT EXPERIMENT ###
+################################################
+
+[GENERAL]
+
+### directory in which experiment is run
+#
+working-dir = /home/mb15505/Research/toolkits/mosesdecoder/scripts/ems/example/test
+
+# specification of the language pair
+input-extension = fr
+output-extension = en
+
+### directories that contain tools and data
+# 
+# moses
+moses-src-dir = /home/mb15505/Research/toolkits/mosesdecoder
+
+# moses binaries
+moses-bin-dir = $moses-src-dir/bin
+#
+# moses scripts
+moses-script-dir = $moses-src-dir/scripts
+
+# srilm
+srilm-dir = /home/mb15505/Research/toolkits/srilm/bin/i686-m64
+
+#################################################################
+# MODIFIED MOORE LEWIS FILTERING
+
+[MML] IGNORE
+
+### specifications for language models to be trained
+#
+lm-training = $srilm-dir/ngram-count
+lm-settings = "-interpolate -kndiscount -unk"
+lm-binarizer = $moses-src-dir/bin/build_binary
+lm-query = $moses-src-dir/bin/query
+order = 5
+
+### in-/out-of-domain source/target corpora to train the 4 language model
+# 
+# in-domain: point either to a parallel corpus
+indomain-stem = /home/mb15505/Research/experiment/WMT2014/MedMT/Paralleldata/_Final/en-fr/train.med.fr-en.dup.tk.true.clean
+
+# point to out-of-domain parallel corpus
+outdomain-stem = /home/mb15505/Research/experiment/WMT2014/GenMT/parallel/_Final/en-fr/gen.en-fr.dup.tk.clean.true
+
+# settings: number of lines sampled from the corpora to train each language model on
+# (if used at all, should be small as a percentage of corpus)
+settings = "--line-count 100000"
+
+
+### filtering some corpora with modified Moore-Lewis
+# specify corpora to be filtered and ratio to be kept, either before or after word alignment
+#mml-filter-corpora = toy
+mml-before-wa = "-proportion 0.3"
+#mml-after-wa = "-proportion 0.9"
