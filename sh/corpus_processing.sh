@@ -6,14 +6,14 @@ f=$2
 e=$3
 test_folder=test
 dev_folder=dev
-ts=2000
-ds=2000
+test_size=2000
+dev_size=2000
 
 mkdir -p $test_folder
 mkdir -p $dev_folder
 
 # extract testing set
-python ~/program/python/extractTestSet.py --s $corpus.$f --t $corpus.$e --o tmp --num $ts
+python ~/program/python/extractTestSet.py --s $corpus.$f --t $corpus.$e --o tmp --num $test_size
 
 for i in *.tmp; do mv $i `echo $i | sed -e 's/\.tmp$//g'`; done
 mv test_source $test_folder/$corpus.test.$f
@@ -26,7 +26,7 @@ for i in *.uni; do mv $i `echo $i | sed -e 's/\.uni$//g'`; done
 cd ..
 
 # extract development set
-python ~/program/python/extractTestSet.py --s $corpus.$f --t $corpus.$e --o tmp --num $ds
+python ~/program/python/extractTestSet.py --s $corpus.$f --t $corpus.$e --o tmp --num $dev_size
 
 for i in *.tmp; do mv $i `echo $i | sed -e 's/\.tmp$//g'`; done
 mv test_source $dev_folder/$corpus.dev.$f
