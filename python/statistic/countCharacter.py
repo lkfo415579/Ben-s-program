@@ -11,9 +11,14 @@ if len(sys.argv) != 2:
 fr = codecs.open(sys.argv[1], 'r', encoding='utf-8')
 
 words = {}
-
+index = 0
 for line in fr:
-	length = len(line)
+	index += 1
+	if index % 10000 == 0:
+		sys.stderr.write('%d\r' % index)
+		sys.stderr.flush()
+
+	length = len(line.strip())
 	if length in words:
 		words[length] = words[length] + 1
 	else:
