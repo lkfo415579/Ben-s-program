@@ -56,7 +56,7 @@ def main():
 	print 'Total lines number:', totalLines
 	test_no = int(num)
 	cut_index = float(totalLines) / float(test_no)
-	cut_index = cut_index
+	cut_index = int(cut_index)
 	print 'Extract lines between', cut_index
 
 	file_list = []
@@ -93,7 +93,7 @@ def main():
 		line_source_tree = fr_source_tree.readline() if flag_source_tree else ' '
 		line_target_tree = fr_target_tree.readline() if flag_target_tree else ' '
 
-		if index % 10000 == 0:
+		if index % 10000 == 0 or extractLineNo % 100 == 0:
 			sys.stdout.write('Current line: %d, Extracted line: %d\r' % (index, extractLineNo))
 			sys.stdout.flush()
 
@@ -122,6 +122,8 @@ def main():
 			if flag_target_tree:
 				fw_target_tree.write(line_target_tree)
 					
+        print
+
 	for f in file_list:
 		f.close()
 

@@ -49,6 +49,7 @@ while 1:
 		target_delete_file.write(target_line)
 		id_line = id_file.readline()
 
+print
 for f in file_list:
 	f.close()
 
