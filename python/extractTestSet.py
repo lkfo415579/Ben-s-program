@@ -56,7 +56,7 @@ def main():
 	print 'Total lines number:', totalLines
 	test_no = int(num)
 	cut_index = float(totalLines) / float(test_no)
-	cut_index = int(cut_index)
+	cut_index = cut_index
 	print 'Extract lines between', cut_index
 
 	file_list = []

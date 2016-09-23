@@ -1,2 +1,2 @@
 ### remove the file postfix
-# for i in *.test; do mv $i `echo $i | sed -e 's/\.test//g'`; done
+for i in *.junk; do mv $i `echo $i | sed -e 's/\.junk//g'`; done

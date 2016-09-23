@@ -1,13 +1,13 @@
 #!/bin/bash
-[ $# -eq 0 ] && { echo "Usage: $0 [corpus_name] [source_lang] [target_lang]"; exit 1; }
+[ $# -eq 0 ] && { echo "Usage: $0 [corpus_name] [source_lang] [target_lang] [testset_size] [devset_size]"; exit 1; }
 
 corpus=$1
 f=$2
 e=$3
 test_folder=test
 dev_folder=dev
-test_size=2000
-dev_size=2000
+test_size=$4
+dev_size=$5
 
 mkdir -p $test_folder
 mkdir -p $dev_folder
