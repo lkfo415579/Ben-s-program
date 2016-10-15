@@ -1,2 +1,5 @@
 ### remove the file postfix
 for i in *.junk; do mv $i `echo $i | sed -e 's/\.junk//g'`; done
+
+### python function, check object method
+[method for method in dir(theano) if callable(getattr(theano, method))]
