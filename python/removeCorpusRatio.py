@@ -23,6 +23,7 @@ while True:
 	target_line = target_file.readline().strip()
 
 	if not source_line or not target_line:
+		sys.stdout.write('End at line %d' % index)
 		break
 	
 	index += 1
