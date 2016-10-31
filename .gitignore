@@ -1,3 +1,5 @@
 phraseTableProcessing/*
 s2t/python/*
 *.pyc
+jar/*
+s2t/*
