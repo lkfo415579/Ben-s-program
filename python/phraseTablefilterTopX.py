@@ -22,9 +22,15 @@ output_ts_file = codecs.open(output_ts, 'w', encoding='utf-8')
 file_list = [input_file, output_st_file, output_ts_file]
 
 # read content into dict
+index = 0
 parse_key = set()
 parse_dict = {}
 for line in input_file:
+	index += 1
+	if index % 10000 == 0:
+		sys.stderr.write('\rReading phrase table: %d' % index)
+		sys.stderr.flush()
+
 	line = line.strip()
 	sep = line.split(' ||| ')
 
@@ -38,8 +44,16 @@ for line in input_file:
 		parse_dict[source] = [[together_count, line]]
 		parse_key.add(source)
 		
+print '\nReading done at %d' % index
+
+index = 0
 # generate files
 for key, value in parse_dict.items():
+	index += 1
+	if index % 10000 == 0:
+		sys.stderr.write('\rGenerating phrases: %d' % index)
+		sys.stderr.flush()
+
 	topk_result = sorted(value, key=lambda x: x[0], reverse=True)[:topk]
 	for k in topk_result:
 		st = k[1].split(' ||| ')
@@ -47,6 +61,8 @@ for key, value in parse_dict.items():
 		for times in range(int(k[0])):
 			output_st_file.write(' ||| '.join([st[0], st[1], st[3]]) + '\n')
 			output_ts_file.write(' ||| '.join([st[1], st[0], ts_align]) + '\n')
+
+print '\nGenerating done at %d' % index
 
 for f in file_list:
 	f.close()
