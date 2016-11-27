@@ -13,7 +13,7 @@ cat tmp.$1.input | ~/mosesdecoder/bin/moses \
 	-dl $2 \
 	-alignment-output-file tmp.$1.align \
 	> tmp.$1.output.dl$2 && \
-python ~/program/kendall_tau.py tmp.$1.align 
+#python ~/program/kendall_tau.py tmp.$1.align 
 #python latexAlignFormating_oneSent.py tmp.$1.input.sent tmp.$1.output tmp.$1.align 0 #&& \
 #rm tmp.$1.*
 
