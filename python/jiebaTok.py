@@ -17,7 +17,7 @@ for line in fr:
 		sys.stderr.write('\rProcessing line %d' % index)
 		sys.stderr.flush()
 	seg_list = jieba.cut(line.strip())
-	fw.write(' '.join(seg_list))
+	fw.write(' '.join(seg_list) + '\n')
 
 sys.stderr.write('\nDone at %d \n' % index)
 

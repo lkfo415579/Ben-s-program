@@ -10,7 +10,7 @@ source_name = sys.argv[1]
 target_name = sys.argv[2]
 source_out_name = source_name + '.noeq'
 target_out_name = target_name + '.noeq'
-delete_line_name = source_name + '_' + target_name + '.noeq.delete.id'
+delete_line_name = source_name + '_' + target_name + '.noeq.delete.sent'
 
 source_file = codecs.open(source_name, 'r', encoding='utf-8')
 target_file = codecs.open(target_name, 'r', encoding='utf-8')
@@ -24,7 +24,7 @@ index = 0
 while True:
 	index += 1
 	if index % 10000 == 0:
-		sys.stderr.write('\t%d' % index)
+		sys.stderr.write('\r%d' % index)
 		sys.stderr.flush()
 
 	source_line = source_file.readline()
@@ -34,7 +34,7 @@ while True:
 		break
 
 	if source_line == target_line:
-		delete_line_file.write('%d\n' % index)
+		delete_line_file.write('%s\n' % source_line.strip())
 	else:
 		source_output_file.write(source_line)
 		target_output_file.write(target_line)
