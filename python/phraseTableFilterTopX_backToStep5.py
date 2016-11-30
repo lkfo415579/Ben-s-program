@@ -59,6 +59,9 @@ for key, value in parse_dict.items():
 		st = k[1].split(' ||| ')
 		ts_align = ' '.join(['-'.join([x.split('-')[1], x.split('-')[0]]) for x in st[3].split()])
 		for times in range(int(k[0])):
+			#output_st_file.write(k[1] + '\n')
+			#output_ts_file.write(k[1] + '\n')
+			# select 0, 1, 3 only
 			output_st_file.write(' ||| '.join([st[0], st[1], st[3]]) + '\n')
 			output_ts_file.write(' ||| '.join([st[1], st[0], ts_align]) + '\n')
 
