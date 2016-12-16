@@ -7,3 +7,4 @@ for FMT in $(iconv -l | sed -e 's/\/\/$//'); do
 done
 #done > $2
 #gedit all.txt
+wc -l * | sed -e 's/^ \+//g' | sort -t ' ' -n
