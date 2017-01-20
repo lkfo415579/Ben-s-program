@@ -2,7 +2,7 @@ import sys
 import os
 
 if len(sys.argv) != 5:
-	print 'Usage: python', sys.argv[0], 'input output pr_from pr_to'
+	print 'Usage: python', sys.argv[0], '[input] [output] [pr_from] [pr_to]'
 	exit()
 
 inputFile = sys.argv[1]

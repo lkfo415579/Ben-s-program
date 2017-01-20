@@ -5,7 +5,7 @@
 	exit -1;
 }
 
-program_path=/home/mb45450/program
+program_path=~/program
 source=$1
 target=$2
 output_directory=$3

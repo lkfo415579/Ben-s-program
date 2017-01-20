@@ -29,7 +29,7 @@ def calculate_kendall_average(file_name):
 	s_list, t_list = [], []
 	for line in fr:
 		index += 1
-		if index % 100 == 0:
+		if index % 1000 == 0:
 			sys.stdout.write('line: %d\t avg_tau: %f\r' % (index, sum_tau/index))
 			#sys.stdout.write('line: %d\t avg_tau: %f\n' % (index, sum_tau/index))
 			sys.stdout.flush()
