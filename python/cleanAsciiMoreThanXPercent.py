@@ -23,6 +23,7 @@ index = 0
 for line in input_file:
 	line = line.strip()
 	output = line
+	line.replace(' ', '')
 	index += 1
 	if index % 10000 == 0:
 		sys.stderr.write('\r%d' % index)
