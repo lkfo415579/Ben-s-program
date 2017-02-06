@@ -4,9 +4,9 @@ import optparse
 import datetime
 import codecs
 
-if len(sys.argv) == 1:
-	print 'Some arguments missing, please use --help to check.'
-	exit()
+#if len(sys.argv) == 1:
+#	print 'Some arguments missing, please use --help to check.'
+#	exit()
 
 def countFileLine(fileName):
 	print 'Counting file total line number...'
@@ -43,7 +43,8 @@ def main():
 	flag_num = not (num == 'None')
 
 	if not flag_source and not flag_target and not flag_source_tree and not flag_target_tree:
-		print 'Some arguments missing, please use --help to check.'	
+		#print 'Some arguments missing, please use --help to check.'	
+		parser.print_help()
 		return
 
 	if not flag_suffix:
@@ -63,25 +64,25 @@ def main():
 	if flag_source:
 		fr_source = codecs.open(source, 'r', encoding='utf-8')
 		fw_source = codecs.open(source+'.'+suffix, 'w', encoding='utf-8')
-		fw_test_source = codecs.open('test_source.'+suffix, 'w', encoding='utf-8')
+		fw_test_source = codecs.open('test.'+source, 'w', encoding='utf-8')
 		file_list = file_list + [fr_source, fw_source, fw_test_source]
 
 	if flag_target:
 		fr_target = codecs.open(target, 'r', encoding='utf-8')
 		fw_target = codecs.open(target+'.'+suffix, 'w', encoding='utf-8')
-		fw_test_target = codecs.open('test_target.'+suffix, 'w', encoding='utf-8')
+		fw_test_target = codecs.open('test.'+target, 'w', encoding='utf-8')
 		file_list = file_list + [fr_target, fw_target, fw_test_target]
 
 	if flag_source_tree:
 		fr_source_tree = codecs.open(source_tree, 'r', encoding='utf-8')
 		fw_source_tree = codecs.open(source_tree+'.'+suffix, 'w', encoding='utf-8')
-		fw_test_source_tree = codecs.open('test_source_tree.'+suffix, 'w', encoding='utf-8')
+		fw_test_source_tree = codecs.open('test.tree.'+source, 'w', encoding='utf-8')
 		file_list = file_list + [fr_source_tree, fw_source_tree, fw_test_source_tree]
 
 	if flag_target_tree:
 		fr_target_tree = codecs.open(target_tree, 'r', encoding='utf-8')
 		fw_target_tree = codecs.open(target_tree+'.'+suffix, 'w', encoding='utf-8')
-		fw_test_target_tree = codecs.open('test_target_tree.'+suffix, 'w', encoding='utf-8')
+		fw_test_target_tree = codecs.open('test.tree.'+target, 'w', encoding='utf-8')
 		file_list = file_list + [fr_target_tree, fw_target_tree, fw_test_target_tree]
 
 	index = 0

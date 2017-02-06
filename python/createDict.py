@@ -1,11 +1,12 @@
 import sys
-if len(sys.argv) != 3:
-	print 'Usage: python', sys.argv[0], '[input-file] [output_dict]'
+if len(sys.argv) != 4:
+	print 'Usage: python', sys.argv[0], '[input-file] [output_dict] [dict/line]'
 	exit()
 
 import codecs
 input_file_name = sys.argv[1]
 output_file_name = sys.argv[2]
+mode = sys.argv[3]
 
 input_file = codecs.open(input_file_name, 'r', encoding='utf-8')
 
@@ -37,9 +38,18 @@ for k, v in dic.items():
 	new_dic[space_word] = v
 '''
 sys.stderr.write('\nExporting ...\n')
-import json
-with open(output_file_name, 'w') as output_file:
-	json.dump(dic, output_file, indent=2)
+import codecs
+if mode == 'dict':
+	import json
+	with codecs.open(output_file_name, 'w', encoding='utf-8') as output_file:
+		json.dump(dic, output_file, indent=2)
+else:
+	import operator
+	sort_dic = sorted(dic.items(), key=operator.itemgetter(1), reverse=True)
+	output_file = codecs.open(output_file_name, 'w', encoding='utf-8')
+	for key, value in sort_dic:
+		output_file.write(key + '\t' + str(value) + '\n')
+	output_file.close()
 
 for f in file_list:
 	f.close()
