@@ -1,156 +1,93 @@
-﻿sed -i -e "s/０/0/g" $1
-sed -i -e "s/０/0/g" $1
-sed -i -e "s/１/1/g" $1
-sed -i -e "s/２/2/g" $1
-sed -i -e "s/３/3/g" $1
-sed -i -e "s/４/4/g" $1
-sed -i -e "s/５/5/g" $1
-sed -i -e "s/６/6/g" $1
-sed -i -e "s/７/7/g" $1
-sed -i -e "s/８/8/g" $1
-sed -i -e "s/９/9/g" $1
-sed -i -e "s/Ａ/A/g" $1
-sed -i -e "s/Ｂ/B/g" $1
-sed -i -e "s/Ｃ/C/g" $1
-sed -i -e "s/Ｄ/D/g" $1
-sed -i -e "s/Ｅ/E/g" $1
-sed -i -e "s/Ｆ/F/g" $1
-sed -i -e "s/Ｇ/G/g" $1
-sed -i -e "s/Ｈ/H/g" $1
-sed -i -e "s/Ｉ/I/g" $1
-sed -i -e "s/Ｊ/J/g" $1
-sed -i -e "s/Ｋ/K/g" $1
-sed -i -e "s/Ｌ/L/g" $1
-sed -i -e "s/Ｍ/M/g" $1
-sed -i -e "s/Ｎ/N/g" $1
-sed -i -e "s/Ｏ/O/g" $1
-sed -i -e "s/Ｐ/P/g" $1
-sed -i -e "s/Ｑ/Q/g" $1
-sed -i -e "s/Ｒ/R/g" $1
-sed -i -e "s/Ｓ/S/g" $1
-sed -i -e "s/Ｔ/T/g" $1
-sed -i -e "s/Ｕ/U/g" $1
-sed -i -e "s/Ｖ/V/g" $1
-sed -i -e "s/Ｗ/W/g" $1
-sed -i -e "s/Ｘ/X/g" $1
-sed -i -e "s/Ｙ/Y/g" $1
-sed -i -e "s/Ｚ/Z/g" $1
-sed -i -e "s/ａ/a/g" $1
-sed -i -e "s/ｂ/b/g" $1
-sed -i -e "s/ｃ/c/g" $1
-sed -i -e "s/ｄ/d/g" $1
-sed -i -e "s/ｅ/e/g" $1
-sed -i -e "s/ｆ/f/g" $1
-sed -i -e "s/ｇ/g/g" $1
-sed -i -e "s/ｈ/h/g" $1
-sed -i -e "s/ｉ/i/g" $1
-sed -i -e "s/ｊ/j/g" $1
-sed -i -e "s/ｋ/k/g" $1
-sed -i -e "s/ｌ/l/g" $1
-sed -i -e "s/ｍ/m/g" $1
-sed -i -e "s/ｎ/n/g" $1
-sed -i -e "s/ｏ/o/g" $1
-sed -i -e "s/ｐ/p/g" $1
-sed -i -e "s/ｑ/q/g" $1
-sed -i -e "s/ｒ/r/g" $1
-sed -i -e "s/ｓ/s/g" $1
-sed -i -e "s/ｔ/t/g" $1
-sed -i -e "s/ｕ/u/g" $1
-sed -i -e "s/ｖ/v/g" $1
-sed -i -e "s/ｗ/w/g" $1
-sed -i -e "s/ｘ/x/g" $1
-sed -i -e "s/ｙ/y/g" $1
-sed -i -e "s/ｚ/z/g" $1
-sed -i -e "s/％/%/g" $1
-sed -i -e "s/＋/+/g" $1
-sed -i -e "s/－/-/g" $1
-sed -i -e "s/／///g" $1
-sed -i -e "s/：/:/g" $1
-sed -i -e "s/；/;/g" $1
-sed -i -e "s/？/?/g" $1
-sed -i -e "s/、/,/g" $1
-sed -i -e "s/，/,/g" $1
-sed -i -e "s/。/./g" $1
-sed -i -e "s/．/./g" $1
-sed -i -e "s/！/!/g" $1
-sed -i -e "s/（/(/g" $1
-sed -i -e "s/）/)/g" $1
-sed -i -e "s/〔/(/g" $1
-sed -i -e "s/〕/)/g" $1
-sed -i -e "s/「/'/g" $1
-sed -i -e "s/」/'/g" $1
-sed -i -e "s/｛/{/g" $1
-sed -i -e "s/｝/}/g" $1
-sed -i -e "s/｜/|/g" $1
-sed -i -e "s/＜/</g" $1
-sed -i -e "s/＞/>/g" $1
-sed -i -e "s/＝/=/g" $1
-sed -i -e "s/［/[/g" $1
-sed -i -e "s/］/]/g" $1
-sed -i -e "s/＃/#/g" $1
-sed -i -e "s/＿/_/g" $1
-sed -i -e "s/“/\"/g" $1
-sed -i -e "s/”/\"/g" $1
-
-sed -i -e 's/“/"/g' $1
-sed -i -e 's/”/"/g' $1
-sed -i -e 's/‘/\'/g' $1
-sed -i -e 's/’/\'/g' $1
-sed -i -e 's/＠/@/g' $1
-sed -i -e 's/﹫/@/g' $1
-sed -i -e 's/。/./g' $1
-sed -i -e 's/．/./g' $1
-sed -i -e 's/，/,/g' $1
-sed -i -e 's/﹐/,/g' $1
-sed -i -e 's/：/:/g' $1
-sed -i -e 's/∶/:/g' $1
-sed -i -e 's/；/;/g' $1
-sed -i -e 's/？/?/g' $1
-sed -i -e 's/［/[/g' $1
-sed -i -e 's/］/]/g' $1
-sed -i -e 's/｛/{/g' $1
-sed -i -e 's/｝/}/g' $1
-sed -i -e 's/（/(/g' $1
-sed -i -e 's/）/)/g' $1
-sed -i -e 's/〔/(/g' $1
-sed -i -e 's/〕/)/g' $1
-sed -i -e 's/＜/</g' $1
-sed -i -e 's/＞/>/g' $1
-sed -i -e 's/《/"/g' $1
-sed -i -e 's/》/"/g' $1
-sed -i -e 's/／///g' $1
-sed -i -e 's/□/-/g' $1
-sed -i -e 's/—/-/g' $1
-sed -i -e 's/－/-/g' $1
-sed -i -e 's/＋/+/g' $1
-sed -i -e 's/＝/=/g' $1
-sed -i -e 's/！/!/g' $1
-sed -i -e 's/＃/#/g' $1
-sed -i -e 's/％/%/g' $1
-sed -i -e 's/＊/*/g' $1
-sed -i -e 's/｜/|/g' $1
-sed -i -e 's/「/"/g' $1
-sed -i -e 's/『/"/g' $1
-sed -i -e 's/』/"/g' $1
-sed -i -e 's/」/"/g' $1
-sed -i -e 's/【/"/g' $1
-sed -i -e 's/】/"/g' $1
-sed -i -e 's/○/0/g' $1
-sed -i -e 's/﹕/:/g' $1
-sed -i -e 's/﹔/;/g' $1
-sed -i -e 's/﹖/?/g' $1
-sed -i -e 's/︰/:/g' $1
-sed -i -e 's/﹗/!/g' $1
-sed -i -e 's/〞/"/g' $1
-sed -i -e 's/﹁/"/g' $1
-sed -i -e 's/﹂/"/g' $1
-sed -i -e 's/﹃/"/g' $1
-sed -i -e 's/﹄/"/g' $1
-sed -i -e 's/、/,/g' $1
-sed -i -e 's/〝/"/g' $1
-sed -i -e 's/◆/ /g' $1
-sed -i -e 's/▼/ /g' $1
-sed -i -e 's/△/ /g' $1
-sed -i -e 's/◎/ /g' $1
-sed -i -e 's/■/ /g' $1
-sed -i -e 's/●/ /g' $1
+﻿sed -e "s/０/0/g" \
+-e "s/０/0/g" \
+-e "s/１/1/g" \
+-e "s/２/2/g" \
+-e "s/３/3/g" \
+-e "s/４/4/g" \
+-e "s/５/5/g" \
+-e "s/６/6/g" \
+-e "s/７/7/g" \
+-e "s/８/8/g" \
+-e "s/９/9/g" \
+-e "s/Ａ/A/g" \
+-e "s/Ｂ/B/g" \
+-e "s/Ｃ/C/g" \
+-e "s/Ｄ/D/g" \
+-e "s/Ｅ/E/g" \
+-e "s/Ｆ/F/g" \
+-e "s/Ｇ/G/g" \
+-e "s/Ｈ/H/g" \
+-e "s/Ｉ/I/g" \
+-e "s/Ｊ/J/g" \
+-e "s/Ｋ/K/g" \
+-e "s/Ｌ/L/g" \
+-e "s/Ｍ/M/g" \
+-e "s/Ｎ/N/g" \
+-e "s/Ｏ/O/g" \
+-e "s/Ｐ/P/g" \
+-e "s/Ｑ/Q/g" \
+-e "s/Ｒ/R/g" \
+-e "s/Ｓ/S/g" \
+-e "s/Ｔ/T/g" \
+-e "s/Ｕ/U/g" \
+-e "s/Ｖ/V/g" \
+-e "s/Ｗ/W/g" \
+-e "s/Ｘ/X/g" \
+-e "s/Ｙ/Y/g" \
+-e "s/Ｚ/Z/g" \
+-e "s/ａ/a/g" \
+-e "s/ｂ/b/g" \
+-e "s/ｃ/c/g" \
+-e "s/ｄ/d/g" \
+-e "s/ｅ/e/g" \
+-e "s/ｆ/f/g" \
+-e "s/ｇ/g/g" \
+-e "s/ｈ/h/g" \
+-e "s/ｉ/i/g" \
+-e "s/ｊ/j/g" \
+-e "s/ｋ/k/g" \
+-e "s/ｌ/l/g" \
+-e "s/ｍ/m/g" \
+-e "s/ｎ/n/g" \
+-e "s/ｏ/o/g" \
+-e "s/ｐ/p/g" \
+-e "s/ｑ/q/g" \
+-e "s/ｒ/r/g" \
+-e "s/ｓ/s/g" \
+-e "s/ｔ/t/g" \
+-e "s/ｕ/u/g" \
+-e "s/ｖ/v/g" \
+-e "s/ｗ/w/g" \
+-e "s/ｘ/x/g" \
+-e "s/ｙ/y/g" \
+-e "s/ｚ/z/g" \
+-e "s/％/%/g" \
+-e "s/＋/+/g" \
+-e "s/－/-/g" \
+-e "s/／///g" \
+-e "s/：/:/g" \
+-e "s/；/;/g" \
+-e "s/？/?/g" \
+-e "s/、/,/g" \
+-e "s/，/,/g" \
+-e "s/。/./g" \
+-e "s/．/./g" \
+-e "s/！/!/g" \
+-e "s/（/(/g" \
+-e "s/）/)/g" \
+-e "s/〔/(/g" \
+-e "s/〕/)/g" \
+-e "s/「/'/g" \
+-e "s/」/'/g" \
+-e "s/｛/{/g" \
+-e "s/｝/}/g" \
+-e "s/｜/|/g" \
+-e "s/＜/</g" \
+-e "s/＞/>/g" \
+-e "s/＝/=/g" \
+-e "s/［/[/g" \
+-e "s/］/]/g" \
+-e "s/＃/#/g" \
+-e "s/＿/_/g" \
+-e "s/“/\"/g" \
+-e "s/”/\"/g" $1 > $2

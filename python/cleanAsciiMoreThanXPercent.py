@@ -23,14 +23,14 @@ index = 0
 for line in input_file:
 	line = line.strip()
 	output = line
-	line.replace(' ', '')
+	line = line.replace(' ', '')
 	index += 1
 	if index % 10000 == 0:
 		sys.stderr.write('\r%d' % index)
 		sys.stderr.flush()
 	
 	if mode == 'ascii':
-		result = sum([1 if not (48 <= ord(w) <= 57) and  ord(w) < 256 else 0 for w in line])
+		result = sum([1 if not (48 <= ord(w) <= 57) and 32 < ord(w) < 256 else 0 for w in line])
 	elif mode == 'noascii':
 		result = sum([1 if 48 <= ord(w) <=57 or ord(w) > 256 else 0 for w in line])
 
@@ -38,9 +38,9 @@ for line in input_file:
 		output = str(index)
 
 	if len(line) > 0 and (float(result) / len(line)) < percent:
-		output_file.write(output + '\n')
+		output_file.write(str(result) + '\t' + output + '\n')
 	else:
-		delete_file.write(output + '\n')
+		delete_file.write(str(result) + '\t' +output + '\n')
 	
 print 'End at line %d' % index
 

@@ -1,14 +1,17 @@
 import sys
-from optparse import OptionParser
+if len(sys.argv) != 5:
+	print 'Usage: python', sys.argv[0], '[input] [score] [number] [output]'
+	exit()
+#from optparse import OptionParser
 
-parser = OptionParser()
+#parser = OptionParser()
 
-inputFile = ""
-outputFile = ""
-kendallTau = ""
-number = 0
+inputFile = sys.argv[1]
+kendallTau = sys.argv[2]
+number = float(sys.argv[3])
+outputFile = sys.argv[4]
 
-parser.add_option("-i", "--input", default="", dest="inputFile",
+'''parser.add_option("-i", "--input", default="", dest="inputFile",
 		help="Input the file for extracting.")
 parser.add_option("-t", "--tau", default="", dest="kendallTau",
 		help="Input the kendall tau score file.")
@@ -23,10 +26,12 @@ if not inputFile or not kendallTau or not number or not outputFile:
 	print "Some options missing, please check the options."
 	parser.print_help()
 	exit()
+'''
+import codecs
 
-fr_input = open(inputFile)
-fr_kendall = open(kendallTau)
-fw_output = open(outputFile)
+fr_input = codecs.open(inputFile, 'r', encoding='utf-8')
+fr_kendall = codecs.open(kendallTau, 'r', encoding='utf-8')
+fw_output = codecs.open(outputFile, 'w', encoding='utf-8')
 
 while (True):
 	line_input = fr_input.readline()

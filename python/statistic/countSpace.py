@@ -25,7 +25,13 @@ for line in fr:
 		words[length] = 1
 
 od = collections.OrderedDict(sorted(words.items()))
-for k, v in od.iteritems(): 
+totalLen = 0
+totalLine = 0
+for k, v in od.iteritems():
+	totalLine += int(v)
+	totalLen += int(v) * int(k)
 	print str(k) + ',' + str(v)	
+
+print 'totalLen/totalLine:', totalLen, '/', totalLine, '=', float(totalLen)/totalLine
 
 fr.close()
