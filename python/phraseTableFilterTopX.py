@@ -1,6 +1,6 @@
 import sys
-if len(sys.argv) != 4:
-	print 'Usage: python', sys.argv[0], '[input] [tmp_folder/] [top-k]'
+if len(sys.argv) != 5:
+	print 'Usage: python', sys.argv[0], '[input] [tmp_folder] [top-k] [phrase-length]'
 	exit()
 
 import codecs
@@ -10,6 +10,7 @@ if dir_name[-1] != '/':
 	dir_name += '/'
 output = dir_name + 'phrase-table'
 topk = int(sys.argv[3])
+phraseLen = int(sys.argv[4])
 
 import os
 os.system('mkdir -p ' + dir_name)
@@ -19,45 +20,42 @@ output_file = codecs.open(output, 'w', encoding='utf-8')
 
 file_list = [input_file, output_file]
 
+def export_to_file(l, f, t):
+	if len(l) == 0: return 0
+	l = sorted(l, key=lambda x: x[0], reverse=True)[:t]
+	for e in l:
+		f.write(e[1] + '\n')
+	return 1
+	
+
 # read content into dict
+old_source= ''
+line_list = []
 index = 0
-parse_key = set()
-parse_dict = {}
+extracted = 0
 for line in input_file:
 	index += 1
-	if index % 10000 == 0:
-		sys.stderr.write('\rReading phrase table: %d' % index)
+	if extracted % 10000 == 0:
+		sys.stderr.write('\rReading phrase table: %d, extracted: %d' % (index, extracted))
 		sys.stderr.flush()
 
 	line = line.strip()
 	sep = line.split(' ||| ')
 
+	# filter - phrase length
+	if len(sep[0].split()) > phraseLen or len(sep[1].split()) > phraseLen:
+		continue
+
+	source = sep[0]
+	if old_source != source:
+		extracted += export_to_file(line_list, output_file, topk)
+		line_list = []
+		old_source = source
+
 	count_part = sep[4]
 	source = sep[0]
-	together_count = int(sep[4].split()[2])
-
-	if source in parse_key:
-		parse_dict[source].append([together_count, line])
-	else:
-		parse_dict[source] = [[together_count, line]]
-		parse_key.add(source)
-		
-print '\nReading done at %d' % index
-
-index = 0
-# generate files
-for key, value in parse_dict.items():
-	index += 1
-	if index % 10000 == 0:
-		sys.stderr.write('\rGenerating phrases: %d' % index)
-		sys.stderr.flush()
-
-	topk_result = sorted(value, key=lambda x: x[0], reverse=True)[:topk]
-	for k in topk_result:
-		st = k[1].split(' ||| ')
-		ts_align = ' '.join(['-'.join([x.split('-')[1], x.split('-')[0]]) for x in st[3].split()])
-		for times in range(int(k[0])):
-			output_file.write(k[1] + '\n')
+	together_count = float(sep[4].split()[2])
+	line_list.append([together_count, line])
 
 print '\nGenerating done at %d' % index
 

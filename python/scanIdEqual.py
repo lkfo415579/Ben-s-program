@@ -13,6 +13,9 @@ target_file = codecs.open(target_name, 'r', encoding='utf-8')
 
 file_list = [source_file, target_file]
 
+source_skip = 0
+target_skip = 0
+
 index = 0
 while True:
 	index += 1
@@ -27,13 +30,29 @@ while True:
 		print '\nBreak at line', index
 		break
 
-	source_id = source_line.split('\t')[0]
-	target_id = target_line.split('\t')[0]
+	source_fail = False
+	target_fail = False
 
-	if not source_id == target_id:
-		print '\nFound!!'
-		print 'Difference at line', index
-		break
+	try:
+		source_id = int(source_line.split('\t')[0])
+	except:
+		source_id = -1
+		source_fail = True
+
+	try:
+		target_id = int(target_line.split('\t')[0])
+	except:
+		target_id = -1
+		target_fail = True
+
+	if not source_id + source_skip == target_id + target_skip:
+		print '\nFound!! source_id =', source_id, '\ttarget_id =', target_id, '\tDifference at line', index
+	
+	if source_fail:
+		source_skip += 1
+	if target_fail:
+		target_skip += 1
+		
 
 for f in file_list:
 	f.close()

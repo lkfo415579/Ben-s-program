@@ -1,7 +1,31 @@
+#-*- encoding: utf-8 -*-
 import sys
 if len(sys.argv) != 5:
 	print 'Clena the single file by the ascii/noascii percentage.'
 	print 'If the input file is Chinese, use clean ascii mode, otherwise is noascii mode.'
+	print 'Example:'
+	print '''
+==> input <==
+a申請人
+ab申請人
+abc申請人
+abcd申請人
+abcde申請人
+abcdef申請人
+abcdefg申請人'''
+	print '''
+==> 0.5 ascii deleted <==
+3       abc申請人
+4       abcd申請人
+5       abcde申請人
+6       abcdef申請人
+7       abcdefg申請人
+	
+==> 0.5 noascii deleted <==
+3       a申請人
+3       ab申請人
+3       abc申請人
+	'''
 	print 'Usage: python', sys.argv[0], '[input] [output] [percent] [ascii/noascii]'
 	exit()
 
