@@ -4,7 +4,7 @@ import codecs
 
 if len(sys.argv) != 3:
 	print 'Print out the statistic information for how many token in number of lines.'
-	print 'Usage: python', sys.argv[0], '[input_file] [id/noid]'
+	print 'Usage: python', sys.argv[0], '[input_file] [none/id/noid]'
 	exit()
 
 mode = sys.argv[2]
@@ -35,7 +35,7 @@ for k, v in od.iteritems():
 		curLine += 1
 		if mode == 'id':
 			print str(curLine) + ',' + str(0)
-		else:
+		elif mode == 'noid':
 			print str(0)
 			
 	curLine = k
@@ -43,7 +43,7 @@ for k, v in od.iteritems():
 	totalLen += int(v) * int(k)
 	if mode == 'id':
 		print str(k) + ',' + str(v)	
-	else:
+	elif mode == 'noid':
 		print str(v)
 
 print 'totalLen/totalLine:', totalLen, '/', totalLine, '=', float(totalLen)/totalLine
