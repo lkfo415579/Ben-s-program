@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[ $# -eq 0 ] && { echo "Usage: $0 input_name mode"; exit 1; }
+[ $# -eq 0 ] && { echo "Usage: $0 [input_name] [mode (default:1)]"; exit 1; }
 #[ ! -f "$_file" ] && { echo "Error: $0 file not found."; exit 2; }
 
 _INPUT_NAME=$1
