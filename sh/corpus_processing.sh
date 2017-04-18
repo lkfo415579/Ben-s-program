@@ -16,8 +16,8 @@ mkdir -p $dev_folder
 python ~/program/python/extractTestSet.py --s $corpus.$f --t $corpus.$e --o tmp --num $test_size
 
 for i in *.tmp; do mv $i `echo $i | sed -e 's/\.tmp$//g'`; done
-mv test_source $test_folder/$corpus.test.$f
-mv test_target $test_folder/$corpus.test.$e
+mv test.$corpus.$f $test_folder/$corpus.test.$f
+mv test.$corpus.$e $test_folder/$corpus.test.$e
 
 # remove duplicate in testing set
 cd $test_folder
@@ -29,8 +29,8 @@ cd ..
 python ~/program/python/extractTestSet.py --s $corpus.$f --t $corpus.$e --o tmp --num $dev_size
 
 for i in *.tmp; do mv $i `echo $i | sed -e 's/\.tmp$//g'`; done
-mv test_source $dev_folder/$corpus.dev.$f
-mv test_target $dev_folder/$corpus.dev.$e
+mv test.$corpus.$f $dev_folder/$corpus.dev.$f
+mv test.$corpus.$e $dev_folder/$corpus.dev.$e
 
 # remove duplicate in development set
 cd $dev_folder
