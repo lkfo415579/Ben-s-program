@@ -21,12 +21,22 @@ output_file = codecs.open(output_name, 'w', encoding='utf-8')
 
 file_list = [train_s_file, train_t_file, test_s_file, test_t_file, output_file]
 
+id = 0
 test_set = set()
 for s, t in zip(test_s_file, test_t_file):
+	id += 1
+	if id % 10000 == 0:
+		sys.stderr.write('\rReading testing set %d ...' % id)
+		sys.stderr.flush()
 	test_set.add(s + ' ||||| ' + t)
 
+id = 0
 index = 0
 while True:
+	id += 1
+	if id % 10000 == 0:
+		sys.stderr.write('\rOutput %d ...' % id)
+		sys.stderr.flush()
 	s = train_s_file.readline()
 	t = train_t_file.readline()
 	if not s or not t:

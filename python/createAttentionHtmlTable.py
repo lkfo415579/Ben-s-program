@@ -25,7 +25,7 @@ target = ''
 length = ''
 source_len = 0
 target_len = 0
-oprint('<html> <head> <style> table,tr,td{border: none;} td{width:20px} </style> </head> <body>\n')
+oprint('<html> <head> <meta charset="utf-8" /> <style> table,tr,td{border: none;} td{width:20px} </style> </head> <body>\n')
 for line in input_file:
 	line = line.strip()
 	line_sep = line.split(' ||| ')

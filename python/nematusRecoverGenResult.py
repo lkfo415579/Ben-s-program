@@ -55,14 +55,12 @@ for line in in_align_file:
 			result = []
 			index = 0
 			for ele in source.split(' '):
-#				print 'index =', index
 				if ele in valid_list:
 					# match the max attention
 					target_index = 0
 					max_index = -1
 					v = -1
 					for g in gen_part_sep:
-#						print 'i =', target_index
 						g_sep = g.split(' ||| ') 
 						if g_sep[3] == ele:
 							if attention[index][int(g_sep[0])] > v:

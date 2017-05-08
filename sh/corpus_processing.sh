@@ -51,7 +51,7 @@ for i in *.r; do mv $i `echo $i | sed -e 's/\.r$//g'`; done
 mkdir deleted
 for i in *.del; do mv $i deleted/`echo $i | sed -e 's/\.del$//g'`; done
 
-rm group.$f group.$e group.id
+#rm group.$f group.$e group.id
 
 # show current corpus lines
 wc -l $corpus.* $test_folder/* $dev_folder/* deleted/*
