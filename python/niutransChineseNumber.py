@@ -4,7 +4,7 @@ if len(sys.argv) != 3:
 	print 'Usage: python', sys.argv[0], '[input] [output]'
 	exit()
 
-debug = False
+debug = True
 
 input_name = sys.argv[1]
 output_name = sys.argv[2]
@@ -24,6 +24,10 @@ chs_arabic_map = {u'零':0, u'一':1, u'二':2, u'三':3, u'四':4,
         u'亿':10 ** 8, u'億':10 ** 8, u'幺': 1,
         u'０':0, u'１':1, u'２':2, u'３':3, u'４':4,
         u'５':5, u'６':6, u'７':7, u'８':8, u'９':9}
+
+arabic_chs_map = {0:'零', 1:'一', 2:'二', 3:'三', 4:'四', 5:'五', 6:'六', 7:'七', 8:'八', 9:'九'}
+
+eng_arabic_map = {'zero':0, 'one':1, 'two':2, 'three':3, 'four':4, 'five':5, 'six':6, 'seven':7, 'eight':8, 'nine':9, 'ten':10}
 
 # not used, but it is powerful, may use later on
 def convertChineseDigitsToArabic (chinese_digits, encoding="utf-8"):
@@ -77,7 +81,25 @@ def toNumber(g, encoding='utf-8'):
 	sep_g = g.split(' ||| ')
 	gen = sep_g[2] # target
 	src = sep_g[4]
+	# special processing for '35bn' -> '35 bn'
+	if src[-2:] == 'bn':
+		src = src[:-2] + ' bn'
+
+	# special processing for number contains ','
+#	elif len(sep_src) == 1:
+	if src.count(',000') > 0:
+		if len(src) >= 6:
+			src = src.replace(',000', ' thousand')
+		else: # 2,000 -> 2000
+			gen = gen.replace(',000', '000')
+	elif src.count(',') > 0:
+		if debug: print 'remove floating point:', g
+		gen = gen.replace(',', '')
+	
 	sep_src = src.split(' ')
+		
+
+	# end for special processing
 	if len(sep_src) > 1: # contain number and unit
 		num = sep_src[0]
 		unit = sep_src[1]
@@ -88,22 +110,65 @@ def toNumber(g, encoding='utf-8'):
 					return '%g%s' % ((result / 10000), '亿')
 				else:
 					return '%g%s' % (result, '万')
-			elif unit == 'billion': # process billion
+			elif unit == 'billion' or unit == 'bn': # process billion
 				result = float(num) * 10
 				return '%g%s' % (result, '亿')
 			elif unit == 'trillion': # process tillion
 				result = float(num)
 				return '%g%s' % (result, '万亿')
+			elif unit == 'thousand':
+				result = float(num)
+				return '%g%s' % ((result / 10), '万')
 			else: # unseen unit
 				if debug: print 'unseen unit', g
 				return sep_g[2]
 		else: # number is not float
-			if debug: print 'number is not float', g
+			if eng_arabic_map.get(num, -1) == -1:
+				return sep_g[2]
+			else:
+				return eng_arabic_map.get(num, -1)
+#			if debug: 
+#				print 'number is not float'
+#				print num
 			return sep_g[2]
 	else: # cannot split
-		if debug: print 'cannot split', g
-		return sep_g[2]
+		if debug: print 'number cannot split', gen
+		return gen
 		
+def toTime(g, encoding='utf-8'):
+	sep_g = g.split(' ||| ')
+	gen = sep_g[2]
+	src = sep_g[4]
+
+	sep_src = src.split(' ')
+	if len(sep_src) == 2:
+		num = sep_src[0]
+		unit = sep_src[1]
+		if isFloat(num):
+			if unit == 'p.m.':
+				clock = int(num)
+				if clock == 12:
+					return '中午%d点' % (clock)	
+				elif clock <= 6:
+					return '下午%d点' % (clock)	
+				else:
+					return '晚上%d点' % (clock)
+			elif unit == 'a.m.':
+				clock = int(num)
+				if clock <= 6:
+					return '凌晨%d点' % (clock)	
+				else:
+					return '上午%d点' % (clock)
+			else:
+				return gen
+		else: # not float
+			return gen
+
+	else:
+		if debug: print 'time cannot split', gen
+		return gen
+		
+
 
 	
 #	print '%s\t%s' % (sep_g[2].encode('utf-8'), sep_g[4].encode('utf-8'))
@@ -135,13 +200,26 @@ for line in input_file:
 
 		for g in sep_gen: # for each gen
 			sep_g = g.split(' ||| ')
-			if sep_g[2] == sep_g[4]: # if source and gen is equal, skip
-				output_file.write('{' + g + '}')
-				continue
+			if sep_g[3] == '$number' and sep_g[2] == sep_g[4]: # if source and gen is equal, skip
+#				if debug: print 'equal: ', gen
+				if sep_g[2].count(',') > 0: # contains ','
+					sep_g[2].replace(',000', ' thousand')
+				else:
+					output_file.write('{' + g + '}')
+					continue
 			if sep_g[3][1:] == 'number': # if gen type is number, process
 				result = toNumber(g) # get process result
 				output_file.write('{' + ' ||| '.join(sep_g[:2]) + ' ||| ')
-				if debug: print result
+				#if debug: print '\t', str(result)
+				try: # encoding problem, I don't know why, but it works, lol
+					output_file.write('%s' % (result.decode('utf-8')))
+				except:
+					output_file.write('%s' % (result))
+				output_file.write(' ||| ' + ' ||| '.join(sep_g[3:]) + '}')
+			elif sep_g[3][1:] == 'time': # if gen type is time, process
+				result = toTime(g) # get process result
+				output_file.write('{' + ' ||| '.join(sep_g[:2]) + ' ||| ')
+				#if debug: print '\t', result
 				try: # encoding problem, I don't know why, but it works, lol
 					output_file.write('%s' % (result.decode('utf-8')))
 				except:
