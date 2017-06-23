@@ -1,4 +1,4 @@
-[ $# -eq 0 ] && echo "Usage: ./$0 [output-file] [echo-config]"
+[ $# -eq 0 ] && echo "Usage: ./$0 [output-file] [echo-config]" && exit 1
 
 output=$1
 shift

@@ -28,6 +28,15 @@ def countGen(gen):
 		result[gen_symbol] = result.get(gen_symbol, 0) + 1
 	return result
 
+gen_symbols = ['$number', '$date', '$time']
+def countSent(sent):
+	result = {}
+	for word in sent.split(' '):
+		if word in gen_symbols:
+			result[word] = result.get(word, 0) + 1
+	return result
+	
+
 def recover(sent, gen):
 	sent_sep = sent.split(' ')
 	gen_sep = gen.split('}{')
@@ -40,25 +49,24 @@ def recover(sent, gen):
 	
 index = 0
 keepCount = 0
+passCount = 0
 recoverCount = 0
 while True:
 	source_line = source_file.readline()
 	target_line = target_file.readline()
 
 	if not source_line and not target_line:
-		sys.stderr.write('Finish!\n')
-		sys.stderr.write('Total line %d, keep:%d, recover:%d\n' % (index, keepCount, recoverCount))
+		sys.stderr.write('Finish!\nTotal line %d, keep:%d, pass:%d, recover:%d\n' % (index, keepCount, passCount, recoverCount))
 		sys.stderr.flush()
 		break
 	elif not source_line or not target_line:
-		sys.stderr.write('Early finish! reason: unbalance lines\n')
-		sys.stderr.write('Total line %d, keep:%d, recover:%d\n' % (index, keepCount, recoverCount))
+		sys.stderr.write('Early finish! reason: unbalance lines\nTotal line %d, keep:%d, pass:%d, recover:%d\n' % (index, keepCount, passCount, recoverCount))
 		sys.stderr.flush()
 		break
 
 	index += 1
-	if index % 100 == 0:
-		sys.stderr.write('\rParsing line %d, keep:%d, recover:%d' % (index, keepCount, recoverCount))
+	if index % 1000 == 0:
+		sys.stderr.write('\rParsing line %d, keep:%d, pass:%d, recover:%d' % (index, keepCount, passCount, recoverCount))
 		sys.stderr.flush()
 
 	source_line = source_line.strip()
@@ -70,16 +78,33 @@ while True:
 	# check gen part if it contains gen
 	if len(source_line_sep) > 1 or len(target_line_sep) > 1:
 		# get dict of gen symbol
-		source_count = countGen(source_line_sep[1]) 
-		target_count = countGen(target_line_sep[1])
+		source_count = {}
+		target_count = {}
+		if len(source_line_sep) > 1:
+			x = {}#countGen(source_line_sep[1])
+			y = countSent(source_line_sep[0])
+			source_count = {k: x.get(k, 0) + y.get(k, 0) for k in set(x) | set(y)}
+#			if x != y:
+#				print source_line + '\n' + target_line + '\n'
+#				continue
+#			print x, y, source_count
+		if len(target_line_sep) > 1:
+			x = {}#countGen(target_line_sep[1])
+			y = countSent(target_line_sep[0])
+			target_count = {k: x.get(k, 0) + y.get(k, 0) for k in set(x) | set(y)}
+#			if x != y:
+#				print source_line + '\n' + target_line + '\n'
+#				continue
+#			print x, y, target_count
+
 		if source_count == target_count:
-			keepCount += 1
+			passCount += 1
 			output_source_file.write(source_line + '\n')
 			output_target_file.write(target_line + '\n')
 		else:
 			recoverCount += 1
-			output_source_file.write(recover(source_line_sep[0], source_line_sep[1]) + '\n')
-			output_target_file.write(recover(target_line_sep[0], target_line_sep[1]) + '\n')
+			output_source_file.write((recover(source_line_sep[0], source_line_sep[1]) if len(source_line_sep) > 1 else source_line_sep[0]) + '\n')
+			output_target_file.write((recover(target_line_sep[0], target_line_sep[1]) if len(target_line_sep) > 1 else target_line_sep[0]) + '\n')
 	# direct output if it not contains gen
 	else:
 		keepCount += 1
