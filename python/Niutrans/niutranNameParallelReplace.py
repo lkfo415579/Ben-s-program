@@ -4,6 +4,7 @@ if len(sys.argv) != 6:
 	print 'This program suggest chinese as source, other language as target.'
 	exit()
 
+import re
 import codecs
 from operator import itemgetter
 source_name, target_name, name_name, source_output_name, target_output_name = sys.argv[1:]
@@ -28,18 +29,22 @@ def gen_to_list(gen):
 			result.append([id, tran, label, source])
 	
 	return result
-
-
 	
 
-# load name pair into dictionary
+print 'load name pair into dictionary'
 name_dict = {}
 for line in name_file:
 	s, t = line.strip().split('\t')
 	name_dict[s.lower()] = t
 
-# main scan
+print 'main scan'
+index = 0
 while True:
+	index += 1
+	if index % 1000 == 0:
+		sys.stderr.write('\r%d' % index)
+		sys.stderr.flush()
+	
 	s_line = source_file.readline()
 	t_line = target_file.readline()
 	if not s_line or not t_line:
@@ -47,6 +52,8 @@ while True:
 
 	# if no contain person label, scan next line
 	if s_line.count('$person') == 0 or s_line.count(' |||| ') == 0:
+		source_output_file.write(s_line)
+		target_output_file.write(t_line)
 		continue
 	# else, analyze person translation
 	else:
@@ -71,18 +78,20 @@ while True:
 			if len(name_tran) == 0:
 				continue
 
-			t_start = t_line.find(name_tran.lower())
-			if t_start > 0: # target sentence contain translation
+			t_start = t_sent.find(name_tran.lower())
+#			t_start = re.search(r'\b'+name_tran.lower()+r'\b', t_sent)
+			t_end = t_start + len(name_tran)
+			if t_start > 0 and (t_end == len(t_sent) or (t_end < len(t_sent) and t_sent[end] == ' ')): # target sentence contain translation
 				# ---- target sentence -----
-				t_end = t_start + len(name_tran)
-#				print '|{}|{}|{}|{}|'.format(t_start, t_end, sw, name_tran)
+				#t_end = t_start + len(name_tran)
+				#print '|{}|{}|{}|{}|'.format(t_start, t_end, sw.encode('utf-8'), name_tran.encode('utf-8'))
 
 				# replace phrase to label
 				t_index = t_sent[:t_start].count(' ') # target word in the sentence index
 				t_word = t_sent[t_start:t_end] # target word
 				t_word_space = t_word.count(' ') # count space in word
 
-#				print '|{}|{}|'.format(t_word, t_word_space)
+				#print '|{}|{}|'.format(t_word, t_word_space)
 				t_sent = t_sent[:t_start] + '$person' + t_sent[t_end:]
 
 				t_gen_list = [[i-t_word_space, t, l, s] if i > t_index else [i, t, l, s] for [i, t, l, s] in t_gen_list]
@@ -104,8 +113,10 @@ while True:
 		t_gen_list = [[i, i, t, l, s] for [i, t, l, s] in t_gen_list]
 
 		# change to niutrans format
-		s_gen = '}{'.join([' ||| '.join(map(str, ele)) for ele in s_gen_list])
-		t_gen = '}{'.join([' ||| '.join(map(str, ele)) for ele in t_gen_list])
+		#print s_gen_list
+		#print t_gen_list
+		s_gen = '}{'.join([' ||| '.join([str(ele[0]), str(ele[1]), ele[2], ele[3], ele[4]]) for ele in s_gen_list])
+		t_gen = '}{'.join([' ||| '.join([str(ele[0]), str(ele[1]), ele[2], ele[3], ele[4]]) for ele in t_gen_list])
 		source_output_file.write(''.join([s_sent, (' |||| {' + s_gen + '}') if len(s_gen) > 0 else '', '\n']))
 		target_output_file.write(''.join([t_sent, (' |||| {' + t_gen + '}') if len(t_gen) > 0 else '', '\n']))
 
