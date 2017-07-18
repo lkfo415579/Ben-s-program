@@ -69,6 +69,7 @@ while True:
 
 	s_gen_list = gen_to_list(s_gen)
 
+	pre_space = 0
 	s_words = s_sent.split(' ')
 	for si in range(len(s_words)):
 		sw = s_words[si]
@@ -94,16 +95,17 @@ while True:
 				else:
 					eid_char = s_sent[eid]
 					
-#				print wid_char, eid_char		
+	#			print wid_char, eid_char		
 
 				if wid_char == ' ' and eid_char == ' ':
 	#				print s_sent[wid-1], s_sent[eid]
 	#				print 'get it', s_sent[wid:wid+len(candidate[0])]
 					s_index = s_sent[:wid].count(' ') # target word in the sentence index
 					s_word_space = candidate[0].count(' ')
-					print s_word_space
+					pre_space += s_word_space
+	#				print s_word_space, pre_space
 					s_gen_list = [[i-s_word_space, t, l, s] if i > s_index else [i, t, l, s] for [i, t, l, s] in s_gen_list]
-					s_gen_list.append([si, candidate[1], '$person', candidate[0]])
+					s_gen_list.append([s_index, candidate[1], '$person', candidate[0]])
 					s_sent = s_sent[:wid] + '$person' + s_sent[eid:]
 
 	# sort by index

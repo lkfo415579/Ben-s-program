@@ -28,7 +28,7 @@ def countGen(gen):
 		result[gen_symbol] = result.get(gen_symbol, 0) + 1
 	return result
 
-gen_symbols = ['$number', '$date', '$time', '$person']
+gen_symbols = ['$number', '$date', '$time']
 def countSent(sent):
 	result = {}
 	for word in sent.split(' '):
@@ -65,8 +65,7 @@ while True:
 		break
 
 	index += 1
-	if index % 1 == 0:
-	#if index % 1000 == 0:
+	if index % 1000 == 0:
 		sys.stderr.write('\rParsing line %d, keep:%d, pass:%d, recover:%d' % (index, keepCount, passCount, recoverCount))
 		sys.stderr.flush()
 
