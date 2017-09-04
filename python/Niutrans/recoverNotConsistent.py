@@ -28,7 +28,7 @@ def countGen(gen):
 		result[gen_symbol] = result.get(gen_symbol, 0) + 1
 	return result
 
-gen_symbols = ['$number', '$date', '$time', '$person']
+gen_symbols = ['$number', '$date', '$time', '$person', '$location']
 def countSent(sent):
 	result = {}
 	for word in sent.split(' '):

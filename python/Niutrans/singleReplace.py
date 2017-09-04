@@ -33,12 +33,14 @@ def read_dict(f):
 	for line in f:
 		s, t = line.strip().split('\t')
 		if lang == 'zh':
-			result[s.lower()] = [[s, t]]
+			#result[s.lower()] = [[s, t]]
+			result[s] = [[s, t]]
 
 		# when it is pt, read the line and store in special structure
 		# for example: s=ben ao, t=BEN ==> {'ben':['ben ao','BEN']}
 		elif lang == 'pt':
-			w = s.split(' ')[0].lower()
+			#w = s.split(' ')[0].lower()
+			w = s.split(' ')[0]
 			tmp = result.get(w, [])
 			tmp.append([s,t])
 			result[w] = tmp
@@ -74,12 +76,14 @@ while True:
 	for si in range(len(s_words)):
 		sw = s_words[si]
 		# get name translation, if not exist, get next word
-		name_tran = name_dict.get(sw.lower(), [])
+		#name_tran = name_dict.get(sw.lower(), [])
+		name_tran = name_dict.get(sw, [])
 		if len(name_tran) == 0:
 			continue
 		
 		for candidate in name_tran:
-			wid = s_sent.find(candidate[0].lower())
+			#wid = s_sent.find(candidate[0].lower())
+			wid = s_sent.find(candidate[0])
 			eid = wid + len(candidate[0])
 
 			#if wid >= 0 and (wid + len(candidate[0]) == ' ' or wid + len(candidate[0]) - 1 == len(s_sent)):
