@@ -1,20 +1,8 @@
 # encoding: utf-8
 import sys
-if len(sys.argv) != 5:
-	print 'Usage: python', sys.argv[0], '[input] [name_pair] [output] [lang:zh/pt]'
-	print 'This program suggest chinese as source, other language as target.'
-	exit()
-
+from operator import itemgetter
 import re
 import codecs
-from operator import itemgetter
-input_name, name_name, source_output_name, lang = sys.argv[1:]
-
-input_file = codecs.open(input_name, 'r', encoding='utf-8')
-name_file = codecs.open(name_name, 'r', encoding='utf-8')
-output_file = codecs.open(source_output_name, 'w', encoding='utf-8')
-
-file_list = [input_file, name_file, output_file]
 
 # input gen: {id ||| id ||| tran ||| label ||| source}{...}
 def gen_to_list(gen):
@@ -28,41 +16,32 @@ def gen_to_list(gen):
 			result.append([id, tran, label, source])
 	return result
 	
-def read_dict(f):
+def read_dict(file_name, lang):
+	f = codecs.open(file_name, 'r', encoding='utf-8')
 	result = {}
 	for line in f:
-		s, t = line.strip().split('\t')
+		s, t = '', ''
 		if lang == 'zh':
-			#result[s.lower()] = [[s, t]]
-			result[s] = [[s, t]]
+			t, s = line.strip().split('\t')
+		else:
+			s, t = line.strip().split('\t')
+		#if lang == 'zh':
+		#	result[s.lower()] = [[s, t]]
+		#	result[t] = [[t, s]]
 
 		# when it is pt, read the line and store in special structure
 		# for example: s=ben ao, t=BEN ==> {'ben':['ben ao','BEN']}
-		elif lang == 'pt':
-			#w = s.split(' ')[0].lower()
-			w = s.split(' ')[0]
-			tmp = result.get(w, [])
-			tmp.append([s,t])
-			result[w] = tmp
+		#elif lang == 'pt':
+		#	w = s.split(' ')[0].lower()
+
+		w = s.split(' ')[0]
+		tmp = result.get(w, [])
+		tmp.append([s,t])
+		result[w] = tmp
+	f.close()
 	return result
-		
-	
-print 'load name pair into dictionary'
-name_dict = read_dict(name_file)
 
-print 'main scan'
-index = 0
-while True:
-	index += 1
-	if index % 1000 == 0:
-		sys.stderr.write('\r%d' % index)
-		sys.stderr.flush()
-	
-	s_line = input_file.readline()
-	if not s_line:
-		break
-
-	s_line = s_line.strip()
+def doReplace(s_line, name_dict, label):
 	s_sent, s_gen = '', ''
 	if s_line.find(' |||| ') >= 0:
 		s_sent, s_gen = s_line.split(' |||| ')
@@ -109,8 +88,8 @@ while True:
 					pre_space += s_word_space
 	#				print s_word_space, pre_space
 					s_gen_list = [[i-s_word_space, t, l, s] if i > s_index else [i, t, l, s] for [i, t, l, s] in s_gen_list]
-					s_gen_list.append([s_index, candidate[1], '$person', candidate[0]])
-					s_sent = s_sent[:wid] + '$person' + s_sent[eid:]
+					s_gen_list.append([s_index, candidate[1], label, candidate[0]])
+					s_sent = s_sent[:wid] + label + s_sent[eid:]
 
 	# sort by index
 	s_gen_list = sorted(s_gen_list, key=itemgetter(0))
@@ -122,7 +101,40 @@ while True:
 	#print s_gen_list
 	#print t_gen_list
 	s_gen = '}{'.join([' ||| '.join([str(ele[0]), str(ele[1]), ele[2], ele[3], ele[4]]) for ele in s_gen_list])
-	output_file.write(''.join([s_sent, (' |||| {' + s_gen + '}') if len(s_gen) > 0 else '', '\n']))
+	return ''.join([s_sent, (' |||| {' + s_gen + '}') if len(s_gen) > 0 else ''])
+	
+def main():
+	input_name, name_name, source_output_name, lang, label = sys.argv[1:]
+	
+	input_file = codecs.open(input_name, 'r', encoding='utf-8')
+	output_file = codecs.open(source_output_name, 'w', encoding='utf-8')
+	
+	file_list = [input_file, output_file]
+	
+	print 'load name pair into dictionary'
+	name_dict = read_dict(name_name, lang)
+	
+	print 'main scan'
+	index = 0
+	while True:
+		index += 1
+		if index % 1000 == 0:
+			sys.stderr.write('\r%d' % index)
+			sys.stderr.flush()
+		
+		s_line = input_file.readline()
+		if not s_line:
+			break
+	
+		s_line = s_line.strip()
+		result = doReplace(s_line, name_dict, '$'+label)
+		output_file.write(result + '\n')
+	
+	for f in file_list:
+		f.close()
 
-for f in file_list:
-	f.close()
+if __name__ == '__main__':
+	if len(sys.argv) != 6:
+		print 'Usage: python', sys.argv[0], '[input] [name_pair] [output] [lang:zh/pt] [label]'
+		exit()
+	main()

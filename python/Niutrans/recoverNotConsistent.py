@@ -44,6 +44,7 @@ def recover(sent, gen):
 	gen_sep[-1] = gen_sep[-1][:-1]
 	for ele in gen_sep:
 		ele_sep = ele.split(' ||| ')
+		#print ele_sep
 		sent_sep[int(ele_sep[0])] = ele_sep[-1]
 	return ' '.join(sent_sep) 
 	
@@ -65,13 +66,15 @@ while True:
 		break
 
 	index += 1
-	if index % 1 == 0:
-	#if index % 1000 == 0:
+	#if index % 1 == 0:
+	if index % 1000 == 0:
 		sys.stderr.write('\rParsing line %d, keep:%d, pass:%d, recover:%d' % (index, keepCount, passCount, recoverCount))
 		sys.stderr.flush()
 
 	source_line = source_line.strip()
 	target_line = target_line.strip()
+	#print source_line
+	#print target_line
 
 	source_line_sep = source_line.split(' |||| ')
 	target_line_sep = target_line.split(' |||| ')

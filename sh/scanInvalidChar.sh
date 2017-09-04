@@ -5,8 +5,8 @@ src=$1
 tgt=$2
 
 echo "Generate id file ... "
-cat $src | nl | sed -e 's/^ \+//g' > $src.$d
-cat $tgt | nl | sed -e 's/^ \+//g' > $tgt.$d
+cat $src | nl -ba | sed -e 's/^ \+//g' > $src.$d
+cat $tgt | nl -ba | sed -e 's/^ \+//g' > $tgt.$d
 echo "done"
 
 echo "Scanning ... "
