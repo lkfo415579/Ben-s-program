@@ -13,9 +13,22 @@ output_file = codecs.open(output_name, 'w', encoding='UTF-8')
 
 file_list = [input_file, output_file]
 
-for line in input_file:
-	line = line.strip()
-	output_file.write(line + '\n')
+index = 0
+success = True
+try:
+	for line in input_file:
+		index += 1
+		line = line.strip()
+		output_file.write(line + '\n')
+except:
+	sys.stderr.write(input_name + '\tError at line ' + str(index) + '\n')
+	success = False
 
 for f in file_list:
 	f.close()
+
+from os import remove
+if not success:
+	remove(output_name)
+else:
+	remove(input_name)
