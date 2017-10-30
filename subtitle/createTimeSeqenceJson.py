@@ -4,9 +4,13 @@ def oprint(string):
 	output_file.write(string)
 
 def parse_time(s):
-	v = s.split(',')
-	x = time.strptime(v[0],'%H:%M:%S')
-	result = int(datetime.timedelta(hours=x.tm_hour,minutes=x.tm_min,seconds=x.tm_sec).total_seconds()) * 1000 + int(v[1])
+	try:
+		v, ms = s[:8], s[9:12]
+		x = time.strptime(v,'%H:%M:%S')
+		result = int(datetime.timedelta(hours=x.tm_hour,minutes=x.tm_min,seconds=x.tm_sec).total_seconds()) * 1000 + int(ms)
+	except ValueError:
+		print s
+		return -1
 	return result
 
 def parse_file(f):
@@ -31,7 +35,14 @@ def parse_file(f):
 				continue
 			elif delta == 2: # time
 				sep_line = line.split(' --> ')
-				start_time, end_time = parse_time(sep_line[0]), parse_time(sep_line[1])
+				if len(sep_line) == 2:
+					start_time, end_time = parse_time(sep_line[0]), parse_time(sep_line[1])
+				else:
+					print line
+					return '[ERROR]'
+				if start_time < 0 or end_time < 0:
+					print line
+					return '[ERROR]'
 				result.append({'start_time':latestTime, 'end_time': end_time, 'content': ['__________']})
 				latestTime = end_time
 				tmp_object['start_time'] = int(start_time)
@@ -61,6 +72,9 @@ if __name__ == '__main__':
 	file_list = [input_file]
 	
 	file1_content = parse_file(input_file)
+	if file1_content == '[ERROR]':
+		print 'ERROR occur in', input_name
+		exit(1)
 	
 	if output_type == 'json':
 		with codecs.open(output_name, 'w', encoding='utf-8') as output_file:
