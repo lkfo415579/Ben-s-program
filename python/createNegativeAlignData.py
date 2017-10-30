@@ -45,10 +45,6 @@ def buildTfIdf(s1, s2):
 		line = set(line) #filter repeated word
 		for word in line:
 			idfCount[word] = idfCount[word] + 1 if idfCount.has_key(word) else 1
-#			if(idfCount.has_key(word)):
-#				idfCount[word] = idfCount[word] + 1
-#			else:
-#				idfCount[word] = 1
 			if(not sContain.has_key(word)):
 				sContain[word] = set()
 			sContain[word].add(i)
@@ -73,18 +69,12 @@ tfCount, idfCount, sContain = buildTfIdf(s1, s2)
 #for key, value in sContain.items():
 #	print key, value
 
-#from random import shuffle
-#for key, value in sContain.items():
-#	if len(value) > 200:
-#		tmp = list(value)
-#		shuffle(tmp)
-#		sContain[key] = tmp[:200]
-
 sys.stderr.write('Main processing ...\n')
 sCount = len(s2)
 data1 = []
 data2 = []
 keywordList = []
+coverageList = []
 index = 0
 for i in range(len(s2)):
 	index += 1
@@ -101,9 +91,7 @@ for i in range(len(s2)):
 		idf = math.log(float(sCount) / float(idfCount.get(word, 0) + 1), 2)
 		idfScore.append(idf)
 
-#	print ' '.join(line), ' '.join(map(str, [idfCount.get(w, -1) for w in line]))
 	sortedWord = list(zip(*sorted(zip(idfScore, line)))[1])
-#	print ' '.join(sortedWord), ' '.join(map(str, [idfCount.get(w, -1) for w in sortedWord]))
 	
 	#only one sentence contains keyword
 	while len(sContain.get(sortedWord[-1], set())) <= 1:
@@ -123,12 +111,10 @@ for i in range(len(s2)):
 	if len(cand) > 200:
 		cand = list(cand)[:200]
 
-#	print len(cand)
-	topCoverage = 0
+	topCoverage = 0.2 # minimum bound
 	topCoverageLine = 0
 	found = False
 	for n in cand:
-#	for n in sContain.get(keyword, []):
 		if i == n:# or line == ' '.join(s2[n]): 
 			continue # skip true answer
 		coverage = float(len(set(line) & set(s2[n].split(' ')))) / float(len(line))
@@ -140,12 +126,13 @@ for i in range(len(s2)):
 	if found:
 		data1.append(i)
 		data2.append(topCoverageLine)
+		coverageList.append(topCoverage)
 		keywordList.append(keyword)
 
 
 sys.stderr.write('\rdone\nExporting result ...\n')
 output_file = open(output_name, 'w', encoding='utf-8')
 for i in range(len(data1)):
-	output_file.write(' ||| '.join([keywordList[i], s1[data1[i]], s1[data2[i]], s2[data1[i]], s2[data2[i]]]) + '\n')
+	output_file.write(' ||| '.join([keywordList[i], str(coverageList[i]), s1[data1[i]], s1[data2[i]], s2[data1[i]], s2[data2[i]]]) + '\n')
 
 output_file.close()

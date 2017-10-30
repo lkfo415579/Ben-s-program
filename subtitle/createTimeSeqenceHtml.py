@@ -1,12 +1,13 @@
 # encoding: utf-8
 import sys
-if len(sys.argv) != 4:
-	print 'Usage: python', sys.argv[0], '[lang1] [lang2] [output]'
+if len(sys.argv) != 5:
+	print 'Usage: python', sys.argv[0], '[lang1] [lang2] [delta] [output]'
 	exit()
 
 lang1_name = sys.argv[1]
 lang2_name = sys.argv[2]
-output_name = sys.argv[3]
+delta = int(sys.argv[3])
+output_name = sys.argv[4]
 
 import codecs
 
@@ -63,11 +64,11 @@ def parse_file(f):
 file1_content = parse_file(lang1_file)
 file2_content = parse_file(lang2_file)
 
-oprint('<html> <head> <meta charset="utf-8" /> <style> div{position:absolute}</style> </head> <body>\n')
-for ele in file1_content:
-	oprint('<div style="top:'+str(ele['start_time'] * 10)+'px; left: 0px; height:'+str((ele['end_time'] - ele['start_time'] + 1) * 10)+'px">' + ' | '.join(ele['content']) + '</div>' + '\n')
+oprint('<html> <head> <meta charset="utf-8" /> <style> div{position:absolute} .left{left: 0px; background: #dadaff} .right{padding-left: 50%; background: #deffd6}</style> </head> <body>\n')
 for ele in file2_content:
-	oprint('<div style="top:'+str(ele['start_time'] * 10)+'px; left: 50%; height:'+str((ele['end_time'] - ele['start_time'] + 1) * 10)+'px">' + ' | '.join(ele['content']) + '</div>' + '\n')
+	oprint('<div class="right" style="top:'+str((ele['start_time']+delta) * 10)+'px; height:'+str((ele['end_time'] - ele['start_time'] + 1) * 5)+'px">' + ' ||| '.join(ele['content']) + '</div>' + '\n')
+for ele in file1_content:
+	oprint('<div class="left" style="top:'+str(ele['start_time'] * 10)+'px; height:'+str((ele['end_time'] - ele['start_time'] + 1) * 5)+'px">' + ' ||| '.join(ele['content']) + '</div>' + '\n')
 oprint('</body> </html>\n')
 
 

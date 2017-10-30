@@ -4,11 +4,16 @@ if len(sys.argv) != 2:
 	exit(0)
 
 from os import listdir
+from os.path import isdir as isdir
 folder_name = sys.argv[1]
-file_name_list = [f for f in listdir(folder_name)]
+if not isdir(folder_name):
+	print folder_name, 'is not folder, skip'
+	exit()
+file_name_list = [f for f in listdir(folder_name) if isdir(folder_name)]
 
 chi_file_name = [folder_name + '/' + file_name for file_name in file_name_list
 	if file_name[:3] == 'chi' and 'out' in file_name]
+
 por_file_name = [folder_name + '/' + file_name for file_name in file_name_list
 	if file_name[:3] == 'por' and 'out' in file_name]
 
